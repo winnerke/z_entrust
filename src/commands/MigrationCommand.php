@@ -1,4 +1,6 @@
-<?php namespace Zizaco\Entrust;
+<?php
+
+namespace Zizaco\Entrust;
 
 /**
  * This file is part of Entrust,
@@ -26,7 +28,7 @@ class MigrationCommand extends Command
      * @var string
      */
     protected $description = 'Creates a migration following the Entrust specifications.';
-   
+
     /**
      * Execute the console command.
      *
@@ -44,7 +46,7 @@ class MigrationCommand extends Command
      */
     public function handle()
     {
-        $this->laravel->view->addNamespace('entrust', substr(__DIR__, 0, -8).'views');
+        $this->laravel->view->addNamespace('entrust', substr(__DIR__, 0, -8) . 'views');
 
         $rolesTable          = Config::get('entrust.roles_table');
         $roleUserTable       = Config::get('entrust.role_user_table');
@@ -52,10 +54,10 @@ class MigrationCommand extends Command
         $permissionRoleTable = Config::get('entrust.permission_role_table');
 
         $this->line('');
-        $this->info( "Tables: $rolesTable, $roleUserTable, $permissionsTable, $permissionRoleTable" );
+        $this->info("Tables: $rolesTable, $roleUserTable, $permissionsTable, $permissionRoleTable");
 
-        $message = "A migration that creates '$rolesTable', '$roleUserTable', '$permissionsTable', '$permissionRoleTable'".
-        " tables will be created in database/migrations directory";
+        $message = "A migration that creates '$rolesTable', '$roleUserTable', '$permissionsTable', '$permissionRoleTable'" .
+            " tables will be created in database/migrations directory";
 
         $this->comment($message);
         $this->line('');
@@ -70,13 +72,12 @@ class MigrationCommand extends Command
                 $this->info("Migration successfully created!");
             } else {
                 $this->error(
-                    "Couldn't create migration.\n Check the write permissions".
-                    " within the database/migrations directory."
+                    "Couldn't create migration.\n Check the write permissions" .
+                        " within the database/migrations directory."
                 );
             }
 
             $this->line('');
-
         }
     }
 
@@ -89,9 +90,9 @@ class MigrationCommand extends Command
      */
     protected function createMigration($rolesTable, $roleUserTable, $permissionsTable, $permissionRoleTable)
     {
-        $migrationFile = base_path("/database/migrations")."/".date('Y_m_d_His')."_entrust_setup_tables.php";
+        $migrationFile = base_path("/database/migrations") . "/" . date('Y_m_d_His') . "_entrust_setup_tables.php";
 
-        $userModelName = Config::get('auth.providers.users.model');
+        $userModelName = Config::get('auth.providers.users.model', '\App\Modules\User\Models\User');
         $userModel = new $userModelName();
         $usersTable = $userModel->getTable();
         $userKeyName = $userModel->getKeyName();
